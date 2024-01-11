@@ -13,8 +13,8 @@ func SetRouts(chBroker *amqp091.Channel, hub *websocket.Hub, server *echo.Echo) 
 
 	handlesElectricity := handles.NewElectricityHandles(chBroker, hub, &user.UserUseCase{}, &electricity.ElectricityUseCase{})
 
-	server.GET("api/v1/candieiro/points", handlesElectricity.ListPoints)
-	server.GET("api/v1/candieiro/point/consumption", handlesElectricity.ListConsumptionByInterval)
+	server.GET("/api/v1/candieiro/points", handlesElectricity.ListPoints)
+	server.GET("/api/v1/candieiro/point/consumption", handlesElectricity.ListConsumptionByInterval)
 	// server.GET("api/v1/candieiro/point/shutdowns", handlesElectricity.ListShutdownSchedule)
 	// server.GET("api/v1/candieiro/point/alert", handlesElectricity.FindSettingsByDevice)
 	// server.POST("api/v1/candieiro/point/shutdown", handlesElectricity.AddShutdown)
