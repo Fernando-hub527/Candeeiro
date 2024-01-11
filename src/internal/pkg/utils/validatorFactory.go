@@ -18,17 +18,19 @@ import (
 func ValidObjectId(number string, sendError func(ctx echo.Context, err errors.RequestError) error, ctx echo.Context) (*primitive.ObjectID, *errors.RequestError) {
 	id, errNumber := primitive.ObjectIDFromHex(number)
 	if errNumber != nil {
-		return nil, errors.NewErrorInvalidParamns("Invalid id")
+		err := errors.NewErrorInvalidParamns("Invalid id")
+		sendError(ctx, *err)
+		return nil, err
 	}
 	return &id, nil
 }
 
 func ValidTime(date string, sendError func(ctx echo.Context, err errors.RequestError) error, ctx echo.Context) (*time.Time, *errors.RequestError) {
-	time, err := time.Parse("", date)
+	newDate, err := time.Parse(time.DateTime, date)
 	if err != nil {
-		err := errors.NewErrorInvalidParamns("Unable to deserialize date")
+		err := errors.NewErrorInvalidParamns("cannot deserialize date, remember to use the format " + time.DateTime)
 		sendError(ctx, *err)
 		return nil, err
 	}
-	return &time, nil
+	return &newDate, nil
 }
