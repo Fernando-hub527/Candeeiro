@@ -1,16 +1,20 @@
 package api
 
 import (
+	"github.com/Fernando-hub527/candieiro/internal/handles"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/websocket"
+	"github.com/Fernando-hub527/candieiro/internal/useCase/electricity"
+	"github.com/Fernando-hub527/candieiro/internal/useCase/user"
 	"github.com/labstack/echo/v4"
 	"github.com/rabbitmq/amqp091-go"
 )
 
-func SetRouts(chSensors chan amqp091.Delivery, hub *websocket.Hub, server *echo.Echo) {
-	// handlesElectricity := handles.NewElectricityHandles(chSensors, hub)
+func SetRouts(chBroker *amqp091.Channel, hub *websocket.Hub, server *echo.Echo) {
 
-	// server.GET("api/v1/candieiro/points", handlesElectricity.ListPoints)
-	// server.GET("api/v1/candieiro/point/consumption", handlesElectricity.ListConsumptionByInterval)
+	handlesElectricity := handles.NewElectricityHandles(chBroker, hub, &user.UserUseCase{}, &electricity.ElectricityUseCase{})
+
+	server.GET("api/v1/candieiro/points", handlesElectricity.ListPoints)
+	server.GET("api/v1/candieiro/point/consumption", handlesElectricity.ListConsumptionByInterval)
 	// server.GET("api/v1/candieiro/point/shutdowns", handlesElectricity.ListShutdownSchedule)
 	// server.GET("api/v1/candieiro/point/alert", handlesElectricity.FindSettingsByDevice)
 	// server.POST("api/v1/candieiro/point/shutdown", handlesElectricity.AddShutdown)
