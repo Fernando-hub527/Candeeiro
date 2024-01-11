@@ -55,8 +55,8 @@ func (elc *ElectricityHandles) ListPoints(context echo.Context) error {
 }
 
 func (elc *ElectricityHandles) ListConsumptionByInterval(context echo.Context) error {
-	startTime, errS := utils.ValidTime(context.QueryParam("startMoment"), elc.sendError, context)
-	endTime, errE := utils.ValidTime(context.QueryParam("startMoment"), elc.sendError, context)
+	startTime, errS := utils.ValidTime(context.QueryParam("startTime"), elc.sendError, context)
+	endTime, errE := utils.ValidTime(context.QueryParam("endTime"), elc.sendError, context)
 	pointId, errP := utils.ValidObjectId(context.QueryParam("point"), elc.sendError, context)
 
 	if errS != nil || errE != nil || errP != nil {
@@ -84,13 +84,11 @@ func (elc *ElectricityHandles) ListConsumptionByInterval(context echo.Context) e
 }
 
 func (elc *ElectricityHandles) recordConsumption(chBroker *amqp091.Channel, queue string) {
-	for {
-		fmt.Println("Iniciando consumo da fila ", queue)
-	}
+	fmt.Println("Iniciando consumo da fila 1", queue)
+
 }
 
 func (elc *ElectricityHandles) updateConsumption(chBroker *amqp091.Channel, queue string) {
-	for {
-		fmt.Println("Iniciando consumo da fila ", queue)
-	}
+	fmt.Println("Iniciando consumo da fila 2", queue)
+
 }
