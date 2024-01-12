@@ -3,15 +3,17 @@ package api
 import (
 	"github.com/Fernando-hub527/candieiro/internal/handles"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/websocket"
+	userrepository "github.com/Fernando-hub527/candieiro/internal/repository/userRepository"
 	"github.com/Fernando-hub527/candieiro/internal/useCase/electricity"
 	"github.com/Fernando-hub527/candieiro/internal/useCase/user"
 	"github.com/labstack/echo/v4"
 	"github.com/rabbitmq/amqp091-go"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func SetRouts(chBroker *amqp091.Channel, hub *websocket.Hub, server *echo.Echo) {
-
-	handlesElectricity := handles.NewElectricityHandles(chBroker, hub, &user.UserUseCase{}, &electricity.ElectricityUseCase{})
+func SetRouts(chBroker *amqp091.Channel, hub *websocket.Hub, server *echo.Echo, database *mongo.Database) {
+	userUseCase := user.NewUserCase(userrepository.New(database))
+	handlesElectricity := handles.NewElectricityHandles(chBroker, hub, userUseCase, &electricity.ElectricityUseCase{})
 
 	server.GET("/api/v1/candieiro/points", handlesElectricity.ListPoints)
 	server.GET("/api/v1/candieiro/point/consumption", handlesElectricity.ListConsumptionByInterval)

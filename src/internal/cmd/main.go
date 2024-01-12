@@ -1,17 +1,23 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/Fernando-hub527/candieiro/internal/api"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/mongodb"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/rabbitmq"
 	"github.com/labstack/echo/v4"
 	"github.com/rabbitmq/amqp091-go"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func main() {
-	mongodb.SetUpDatabase("mongodb://root:example@localhost:27018/")
+	database, err := mongodb.SetUpDatabase("mongodb://root:example@localhost:27018/")
+	if err != nil {
+		panic("Falha ao se conectar ao banco \n")
+	}
 	chRabbit := startBroker("amqp://iot:iot@localhost:5673/")
-	startApi(chRabbit)
+	startApi(chRabbit, database)
 }
 
 func startBroker(url string) *amqp091.Channel {
@@ -22,8 +28,11 @@ func startBroker(url string) *amqp091.Channel {
 	return ch
 }
 
-func startApi(chSensors *amqp091.Channel) {
+func startApi(chSensors *amqp091.Channel, database *mongo.Database) {
 	server := echo.New()
-	api.SetRouts(chSensors, api.SetWebsocket(server), server)
-	server.Logger.Fatal(server.Start(":1323"))
+	api.SetRouts(chSensors, api.SetWebsocket(server), server, database)
+	if err := server.Start(":1323"); err != nil {
+		server.Logger.Fatal()
+	}
+	fmt.Println("server running")
 }

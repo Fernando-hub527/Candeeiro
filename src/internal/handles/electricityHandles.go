@@ -40,7 +40,7 @@ func (elc *ElectricityHandles) ListPoints(context echo.Context) error {
 		return nil
 	}
 
-	if err := elc.userUseCase.ValidAccess(context.Param("userName"), *planId); err != nil {
+	if err := elc.userUseCase.ValidAccess(context.Param("userName"), *planId, context.Request().Context()); err != nil {
 		context.String(int(err.Status), err.ToString())
 		return nil
 	}
@@ -69,7 +69,7 @@ func (elc *ElectricityHandles) ListConsumptionByInterval(context echo.Context) e
 		return nil
 	}
 
-	if err := elc.userUseCase.ValidAccess(context.Param("userName"), point.PlanId); err != nil {
+	if err := elc.userUseCase.ValidAccess(context.Param("userName"), point.PlanId, context.Request().Context()); err != nil {
 		context.String(int(err.Status), err.ToString())
 		return nil
 	}
