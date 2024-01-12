@@ -1,4 +1,4 @@
-package consumution
+package consumutionrepository
 
 import (
 	"context"
