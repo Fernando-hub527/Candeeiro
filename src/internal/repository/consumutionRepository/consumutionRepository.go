@@ -5,9 +5,16 @@ import (
 	"time"
 
 	"github.com/Fernando-hub527/candieiro/internal/entity"
+	"github.com/Fernando-hub527/candieiro/internal/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+type IConsumutionRepository interface {
+	ListConsumutionByIntervalAndPoint(startMoment time.Time, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*[]entity.Consumution, *errors.RequestError)
+	CreateConsumution(consumution entity.Consumution)
+}
 
 type ConsumutionRepository struct {
 	collConsumution *mongo.Collection
@@ -19,7 +26,7 @@ func New(database *mongo.Database) *ConsumutionRepository {
 	}
 }
 
-func (repository *ConsumutionRepository) listConsumutionByIntervalAndPoint(startMoment time.Time, endMoment time.Time, pointId string, ctx context.Context) (*[]entity.Consumution, error) {
+func (repository *ConsumutionRepository) ListConsumutionByIntervalAndPoint(startMoment time.Time, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*[]entity.Consumution, *errors.RequestError) {
 	filter := bson.D{
 		{Key: "$and",
 			Value: bson.A{
@@ -32,18 +39,18 @@ func (repository *ConsumutionRepository) listConsumutionByIntervalAndPoint(start
 
 	cursor, err := repository.collConsumution.Find(ctx, filter)
 	if err != nil {
-		return nil, err
+		return nil, errors.NewInternalErros("Unable to list consumption")
 	}
 
 	var consumution []entity.Consumution
 
 	if err := cursor.All(ctx, &consumution); err != nil {
-		return nil, err
+		return nil, errors.NewInternalErros("Unable to list consumption")
 	}
 
 	return &consumution, nil
 }
 
-func (repository *ConsumutionRepository) createConsumution(consumution entity.Consumution) {
+func (repository *ConsumutionRepository) CreateConsumution(consumution entity.Consumution) {
 
 }

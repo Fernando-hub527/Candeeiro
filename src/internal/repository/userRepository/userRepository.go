@@ -20,7 +20,7 @@ type userRepository struct {
 
 func New(database *mongo.Database) *userRepository {
 	return &userRepository{
-		collPoint: database.Collection("users"),
+		collPoint: database.Collection("user"),
 	}
 }
 
@@ -33,15 +33,14 @@ func (repository *userRepository) CreateUser(user entity.User, ctx context.Conte
 }
 
 func (repository *userRepository) FindUserByNameOrEmail(name string, email string, ctx context.Context) (*entity.User, *errors.RequestError) {
-	// filter := bson.D{
-	// 	{Key: "$or",
-	// 		Value: bson.A{
-	// 			bson.M{"name": "Fernando"},
-	// 			bson.M{"email": email},
-	// 		},
-	// 	},
-	// }
-	filter := bson.D{{Key: "UserName", Value: "Fernando"}}
+	filter := bson.D{
+		{Key: "$or",
+			Value: bson.A{
+				bson.M{"UserName": "Fernando"},
+				bson.M{"Email": email},
+			},
+		},
+	}
 
 	var userResult entity.User
 	err := repository.collPoint.FindOne(context.TODO(), filter).Decode(&userResult)
