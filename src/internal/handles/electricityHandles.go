@@ -45,7 +45,7 @@ func (elc *ElectricityHandles) ListPoints(context echo.Context) error {
 		return nil
 	}
 
-	points, err := elc.electricityUseCase.ListPointsByPlant(*planId)
+	points, err := elc.electricityUseCase.ListPointsByPlant(*planId, context.Request().Context())
 	if err != nil {
 		context.String(int(err.Status), err.ToString())
 		return nil
@@ -63,7 +63,7 @@ func (elc *ElectricityHandles) ListConsumptionByInterval(context echo.Context) e
 		return nil
 	}
 
-	point, err := elc.electricityUseCase.FindPointById(*pointId)
+	point, err := elc.electricityUseCase.FindPointById(*pointId, context.Request().Context())
 	if err != nil {
 		context.String(int(err.Status), err.ToString())
 		return nil
@@ -74,7 +74,7 @@ func (elc *ElectricityHandles) ListConsumptionByInterval(context echo.Context) e
 		return nil
 	}
 
-	points, err := elc.electricityUseCase.ListConsumptionByIntervalAndPoint(*pointId, *startTime, *endTime)
+	points, err := elc.electricityUseCase.ListConsumptionByIntervalAndPoint(*pointId, *startTime, *endTime, context.Request().Context())
 	if err != nil {
 		context.String(int(err.Status), err.ToString())
 		return nil

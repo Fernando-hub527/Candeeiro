@@ -45,3 +45,7 @@ func (elc *ElectricityUseCase) ListConsumptionByIntervalAndPoint(pointId primiti
 
 	return elc.repositoryConsumution.ListConsumutionByIntervalAndPoint(startMoment, endMoment, pointId, ctx)
 }
+
+func (elc *ElectricityUseCase) CreateConsumutionRecord() {
+
+}
