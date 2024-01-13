@@ -9,7 +9,7 @@ import (
 )
 
 type NewConsumutionDTO struct {
-	Kw        int64
+	Kw        uint32
 	StartTime time.Time
 	EndTime   time.Time
 	PointId   primitive.ObjectID
