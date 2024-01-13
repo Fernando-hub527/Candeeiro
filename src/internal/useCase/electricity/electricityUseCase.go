@@ -4,8 +4,10 @@ import (
 	"context"
 	"time"
 
+	"github.com/Fernando-hub527/candieiro/internal/dtos"
 	"github.com/Fernando-hub527/candieiro/internal/entity"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/errors"
+	timetools "github.com/Fernando-hub527/candieiro/internal/pkg/utils/timeTools"
 	consumutionrepository "github.com/Fernando-hub527/candieiro/internal/repository/consumutionRepository"
 	pointrepository "github.com/Fernando-hub527/candieiro/internal/repository/pointRepository"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -46,6 +48,23 @@ func (elc *ElectricityUseCase) ListConsumptionByIntervalAndPoint(pointId primiti
 	return elc.repositoryConsumution.ListConsumutionByIntervalAndPoint(startMoment, endMoment, pointId, ctx)
 }
 
-func (elc *ElectricityUseCase) CreateConsumutionRecord() {
+func (elc *ElectricityUseCase) CreateConsumutionRecord(newConsumution dtos.NewConsumutionDTO) *errors.RequestError {
+	newRecord, err := entity.FactoryConsumution(newConsumution)
+	if err != nil {
+		return err
+	}
+	record, _ := elc.repositoryConsumution.FindConsumutionRecordByIntervalAndPoint(timetools.SetMinutes(newRecord.StartOfConsumption, 0), timetools.SetMinutes(newRecord.EndOfConsumption, 59), newConsumution.PointId, context.TODO())
 
+	if record != nil {
+		return elc.repositoryConsumution.UpdateConsumutionOrCreate(*updateConsumution(*record, *newRecord))
+	} else {
+		return elc.repositoryConsumution.UpdateConsumutionOrCreate(*newRecord)
+	}
+}
+
+func updateConsumution(record entity.Consumution, newRecord entity.Consumution) *entity.Consumution {
+	record.EndOfConsumption = newRecord.EndOfConsumption
+	record.Cost += newRecord.Cost
+	record.Kw += newRecord.Kw
+	return &record
 }
