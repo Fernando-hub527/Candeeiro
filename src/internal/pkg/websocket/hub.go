@@ -9,7 +9,7 @@ type Hub struct {
 
 	unregister chan *Client
 
-	messages chan map[string][]byte
+	Messages chan map[string][]byte
 }
 
 /*
@@ -22,7 +22,7 @@ func NewHub() *Hub {
 		Romms:      map[string][]*Client{},
 		registers:  make(chan map[*Client][]string),
 		unregister: make(chan *Client),
-		messages:   make(chan map[string][]byte),
+		Messages:   make(chan map[string][]byte),
 	}
 }
 
@@ -33,7 +33,7 @@ func (h *Hub) Run() {
 			h.Romms = addClientsToRoom(client, h.Romms)
 		case client := <-h.unregister:
 			h.Romms = removeClientToRooms(client, h.Romms)
-		case messages := <-h.messages:
+		case messages := <-h.Messages:
 			senMessage(messages, h.Romms)
 		}
 	}
@@ -64,8 +64,7 @@ func removeClientToRooms(client *Client, rooms map[string][]*Client) map[string]
 		if len(rooms[clientRoom]) == 0 {
 			delete(rooms, clientRoom)
 		}
-		close(client.send)
-		return rooms
 	}
+	close(client.send)
 	return rooms
 }
