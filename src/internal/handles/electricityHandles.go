@@ -121,8 +121,8 @@ func (elc *ElectricityHandles) updateConsumption(broker broker.IBroker, queue st
 		} else {
 			if _, err := elc.electricityUseCase.FindPointById(consuDTO.PointId, context.TODO()); err != nil {
 				fmt.Println("Dados decebidos de ponto de consumo não registrado ", consuDTO.PointId)
-			} else{
-				elc.hub.
+			} else {
+				elc.hub.Messages <- map[string][]byte{consuDTO.PointId.String(): msg.GetMessager()}
 			}
 			msg.Accept()
 		}
