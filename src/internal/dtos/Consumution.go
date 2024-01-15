@@ -22,3 +22,10 @@ func FactoryDTO[T interface{}](jsonDTO string) (*T, *errors.RequestError) {
 	}
 	return &result, nil
 }
+
+type RealTimeConsumptionDTO struct {
+	Kwh       uint32
+	CreatedAt time.Time
+	Cost      uint32
+	PointId   primitive.ObjectID
+}
