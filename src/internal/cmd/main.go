@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/Fernando-hub527/candieiro/internal/api"
+	rabbitmq "github.com/Fernando-hub527/candieiro/internal/pkg/broker"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/mongodb"
-	"github.com/Fernando-hub527/candieiro/internal/pkg/rabbitmq"
 	"github.com/labstack/echo/v4"
 	"github.com/rabbitmq/amqp091-go"
 	"go.mongodb.org/mongo-driver/mongo"

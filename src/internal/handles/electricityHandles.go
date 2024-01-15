@@ -1,15 +1,19 @@
 package handles
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 
+	"github.com/Fernando-hub527/candieiro/internal/dtos"
+	"github.com/Fernando-hub527/candieiro/internal/pkg/broker"
+	rabbitmq "github.com/Fernando-hub527/candieiro/internal/pkg/broker"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/errors"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/utils"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/websocket"
 	"github.com/Fernando-hub527/candieiro/internal/useCase/electricity"
 	"github.com/Fernando-hub527/candieiro/internal/useCase/user"
 	"github.com/labstack/echo/v4"
-	"github.com/rabbitmq/amqp091-go"
 )
 
 type ElectricityHandles struct {
@@ -18,14 +22,14 @@ type ElectricityHandles struct {
 	electricityUseCase electricity.IElectricityUseCase
 }
 
-func NewElectricityHandles(chBroker *amqp091.Channel, hub *websocket.Hub, userUseCase user.IUserUseCase, electricityUseCase electricity.IElectricityUseCase) *ElectricityHandles {
+func NewElectricityHandles(broker rabbitmq.IBroker, hub *websocket.Hub, userUseCase user.IUserUseCase, electricityUseCase electricity.IElectricityUseCase) *ElectricityHandles {
 	elc := &ElectricityHandles{
 		hub:                hub,
 		userUseCase:        userUseCase,
 		electricityUseCase: electricityUseCase,
 	}
-	go elc.recordConsumption(chBroker, "consumptio/electicity/record")
-	go elc.updateConsumption(chBroker, "consumptio/electicity/update")
+	go elc.recordConsumption(broker, "consumptio/electicity/record")
+	go elc.updateConsumption(broker, "consumptio/electicity/update")
 	return elc
 }
 
@@ -83,12 +87,44 @@ func (elc *ElectricityHandles) ListConsumptionByInterval(context echo.Context) e
 	return nil
 }
 
-func (elc *ElectricityHandles) recordConsumption(chBroker *amqp091.Channel, queue string) {
-	fmt.Println("Iniciando consumo da fila 1", queue)
+func (elc *ElectricityHandles) recordConsumption(broker broker.IBroker, queue string) {
+	chanMessager, err := broker.Consumer(queue)
+	if err != nil {
+		fmt.Println("Falha ao consumir fila ", queue)
+		return
+	}
 
+	for msg := range chanMessager {
+		var consuDTO dtos.NewConsumutionDTO
+		if err := json.Unmarshal(msg.GetMessager(), &consuDTO); err != nil {
+			fmt.Println("Falha ao dessrializar json")
+			msg.Reject()
+		} else {
+			elc.electricityUseCase.CreateConsumutionRecord(consuDTO)
+			msg.Accept()
+		}
+	}
 }
 
-func (elc *ElectricityHandles) updateConsumption(chBroker *amqp091.Channel, queue string) {
-	fmt.Println("Iniciando consumo da fila 2", queue)
+func (elc *ElectricityHandles) updateConsumption(broker broker.IBroker, queue string) {
+	chanMessager, err := broker.Consumer(queue)
+	if err != nil {
+		fmt.Println("Falha ao consumir fila ", queue)
+		return
+	}
 
+	for msg := range chanMessager {
+		var consuDTO dtos.RealTimeConsumptionDTO
+		if err := json.Unmarshal(msg.GetMessager(), &consuDTO); err != nil {
+			fmt.Println("Falha ao dessrializar json")
+			msg.Reject()
+		} else {
+			if _, err := elc.electricityUseCase.FindPointById(consuDTO.PointId, context.TODO()); err != nil {
+				fmt.Println("Dados decebidos de ponto de consumo não registrado ", consuDTO.PointId)
+			} else{
+				elc.hub.
+			}
+			msg.Accept()
+		}
+	}
 }

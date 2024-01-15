@@ -17,6 +17,7 @@ type IElectricityUseCase interface {
 	FindPointById(pointId primitive.ObjectID, ctx context.Context) (*entity.Point, *errors.RequestError)
 	ListPointsByPlant(plantId primitive.ObjectID, ctx context.Context) (*[]entity.Point, *errors.RequestError)
 	ListConsumptionByIntervalAndPoint(pointId primitive.ObjectID, startMoment time.Time, endMoment time.Time, ctx context.Context) (*[]entity.Consumution, *errors.RequestError)
+	CreateConsumutionRecord(newConsumution dtos.NewConsumutionDTO) *errors.RequestError
 }
 
 type ElectricityUseCase struct {
@@ -49,6 +50,7 @@ func (elc *ElectricityUseCase) ListConsumptionByIntervalAndPoint(pointId primiti
 }
 
 func (elc *ElectricityUseCase) CreateConsumutionRecord(newConsumution dtos.NewConsumutionDTO) *errors.RequestError {
+	// VERIFICAR SE PONTO EXISTE
 	newRecord, err := entity.FactoryConsumution(newConsumution)
 	if err != nil {
 		return err
