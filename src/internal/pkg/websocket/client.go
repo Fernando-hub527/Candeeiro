@@ -69,22 +69,23 @@ func (c *Client) writePump() {
 	}
 }
 
-func DefaultHandlesWs(hub *Hub, context echo.Context) {
+func DefaultHandlesWs(hub *Hub, context echo.Context) *errors.RequestError {
 
 	id, errId := utils.ValidObjectId(context.QueryParam("plantId"), func(ctx echo.Context, err errors.RequestError) error {
 		return context.String(int(err.Status), err.ToString())
 	}, context)
 
 	if errId != nil {
-		return
+		return errId
 	}
 
 	conn, err := upgrader.Upgrade(context.Response(), context.Request(), nil)
 	if err != nil {
-		return
+		return errors.NewInternalErros("Ws connection update failure")
 	}
 	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256)}
 	client.hub.registers <- map[*Client][]string{client: {id.String()}}
 
 	go client.writePump()
+	return nil
 }
