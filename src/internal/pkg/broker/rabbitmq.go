@@ -10,7 +10,7 @@ type Broker struct {
 }
 
 func NewBroker(url string) (*Broker, *errors.RequestError) {
-	chAmqp, err := OpenChannel(url)
+	chAmqp, err := openChannel(url)
 	if err != nil {
 		return nil, errors.NewInternalErros("Unable to connect to broker")
 	}
@@ -19,7 +19,7 @@ func NewBroker(url string) (*Broker, *errors.RequestError) {
 	}, nil
 }
 
-func OpenChannel(url string) (*amqp091.Channel, error) {
+func openChannel(url string) (*amqp091.Channel, error) {
 	conn, err := amqp091.Dial(url)
 	if err != nil {
 		return nil, err
