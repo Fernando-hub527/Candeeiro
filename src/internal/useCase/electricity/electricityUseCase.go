@@ -50,7 +50,11 @@ func (elc *ElectricityUseCase) ListConsumptionByIntervalAndPoint(pointId primiti
 }
 
 func (elc *ElectricityUseCase) CreateConsumutionRecord(newConsumution dtos.NewConsumutionDTO) *errors.RequestError {
-	// VERIFICAR SE PONTO EXISTE
+	_, err := elc.FindPointById(newConsumution.PointId, context.TODO())
+	if err != nil {
+		return err
+	}
+
 	newRecord, err := entity.FactoryConsumution(newConsumution)
 	if err != nil {
 		return err
