@@ -9,7 +9,7 @@ type Broker struct {
 	channel *amqp091.Channel
 }
 
-func NewBroker(url string) (*Broker, *errors.RequestError) {
+func NewBrokerRabbit(url string) (*Broker, *errors.RequestError) {
 	chAmqp, err := openChannel(url)
 	if err != nil {
 		return nil, errors.NewInternalErros("Unable to connect to broker")
@@ -33,9 +33,47 @@ func openChannel(url string) (*amqp091.Channel, error) {
 	return ch, nil
 }
 
-func (broker *Broker) Consumer(queue string) (chan IBrokerMessager, error) {
-	return nil, nil
+func (broker *Broker) Consumer(queue string) chan IBrokerMessager {
+	chanMessage := make(chan IBrokerMessager)
+	go broker.listenToQueues(chanMessage, broker.channel, queue)
+	return chanMessage
 }
 
-func (broker *Broker) listenToQueues(channel chan amqp091.Delivery, channelRabbit *amqp091.Channel, queue string) {
+func (broker *Broker) listenToQueues(channel chan IBrokerMessager, channelRabbit *amqp091.Channel, queue string) error {
+	msgs, err := channelRabbit.Consume(
+		queue,
+		"electricity_consumption",
+		false, false, false, false, nil,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	for msg := range msgs {
+		channel <- NewBrokerMessage(msg)
+	}
+	return nil
+}
+
+type BrokerMessagerRabbit struct {
+	msg amqp091.Delivery
+}
+
+func NewBrokerMessage(msg amqp091.Delivery) *BrokerMessagerRabbit {
+	return &BrokerMessagerRabbit{
+		msg: msg,
+	}
+}
+
+func (broker *BrokerMessagerRabbit) Reject() error {
+	return broker.msg.Reject(false)
+}
+
+func (broker *BrokerMessagerRabbit) Accept() error {
+	return broker.msg.Ack(false)
+}
+
+func (broker *BrokerMessagerRabbit) GetMessager() []byte {
+	return broker.msg.Body
 }
