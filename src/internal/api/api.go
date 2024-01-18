@@ -16,6 +16,7 @@ import (
 func SetRouts(broker broker.IBroker, hub *websocket.Hub, server *echo.Echo, database *mongo.Database) {
 	userUseCase := user.NewUserCase(userrepository.New(database))
 	electricityUseCase := electricity.NewElectricityUseCase(pointrepository.New(database), consumutionrepository.New(database))
+
 	handlesElectricity := handles.NewElectricityHandles(broker, hub, userUseCase, electricityUseCase)
 
 	server.GET("/api/v1/candieiro/points", handlesElectricity.ListPoints)
