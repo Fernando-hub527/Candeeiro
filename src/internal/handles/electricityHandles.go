@@ -88,11 +88,7 @@ func (elc *ElectricityHandles) ListConsumptionByInterval(context echo.Context) e
 }
 
 func (elc *ElectricityHandles) recordConsumption(broker broker.IBroker, queue string) {
-	chanMessager, err := broker.Consumer(queue)
-	if err != nil {
-		fmt.Println("Falha ao consumir fila ", queue)
-		return
-	}
+	chanMessager := broker.Consumer(queue)
 
 	for msg := range chanMessager {
 		var consuDTO dtos.NewConsumutionDTO
@@ -107,11 +103,7 @@ func (elc *ElectricityHandles) recordConsumption(broker broker.IBroker, queue st
 }
 
 func (elc *ElectricityHandles) updateConsumption(broker broker.IBroker, queue string) {
-	chanMessager, err := broker.Consumer(queue)
-	if err != nil {
-		fmt.Println("Falha ao consumir fila ", queue)
-		return
-	}
+	chanMessager := broker.Consumer(queue)
 
 	for msg := range chanMessager {
 		var consuDTO dtos.RealTimeConsumptionDTO
