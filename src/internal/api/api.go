@@ -18,7 +18,9 @@ func SetRouts(broker broker.IBroker, hub *websocket.Hub, server *echo.Echo, data
 	electricityUseCase := electricity.NewElectricityUseCase(pointrepository.New(database), consumutionrepository.New(database))
 
 	handlesElectricity := handles.NewElectricityHandles(broker, hub, userUseCase, electricityUseCase)
+	handlesUser := handles.NewUserHandles(userUseCase)
 
+	server.POST("/api/v1/candieiro/login", handlesUser.Login)
 	server.GET("/api/v1/candieiro/points", handlesElectricity.ListPoints)
 	server.GET("/api/v1/candieiro/point/consumption", handlesElectricity.ListConsumptionByInterval)
 }
