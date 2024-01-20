@@ -1,4 +1,4 @@
-package jwt
+package auth
 
 import (
 	"errors"
@@ -20,20 +20,21 @@ func CreateToken(userID string) (string, error) {
 	return token.SignedString("secretKey")
 }
 
-func ValidateToken(r *http.Request) error {
+func ValidateToken(r *http.Request) (string, error) {
 	tokenString := strings.Replace(r.Header.Get("Authorization"), "bearer ", "", 0)
 
 	token, err := jwt.Parse(tokenString, returnKeyVerifyToken)
 
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return nil
+	if permissions, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		userId := permissions["userId"].(string)
+		return userId, nil
 	}
 
-	return errors.New("invalid token")
+	return "", errors.New("invalid token")
 }
 
 func returnKeyVerifyToken(token *jwt.Token) (interface{}, error) {

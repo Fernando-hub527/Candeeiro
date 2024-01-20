@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/Fernando-hub527/candieiro/internal/handles"
+	"github.com/Fernando-hub527/candieiro/internal/pkg/auth"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/broker"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/websocket"
 	consumutionrepository "github.com/Fernando-hub527/candieiro/internal/repository/consumutionRepository"
@@ -21,8 +22,8 @@ func SetRouts(broker broker.IBroker, hub *websocket.Hub, server *echo.Echo, data
 	handlesUser := handles.NewUserHandles(userUseCase)
 
 	server.POST("/api/v1/candieiro/login", handlesUser.Login)
-	server.GET("/api/v1/candieiro/points", handlesElectricity.ListPoints)
-	server.GET("/api/v1/candieiro/point/consumption", handlesElectricity.ListConsumptionByInterval)
+	server.GET("/api/v1/candieiro/points", auth.AuthenticateUser(handlesElectricity.ListPoints, auth.SendAuthError))
+	server.GET("/api/v1/candieiro/point/consumption", auth.AuthenticateUser(handlesElectricity.ListConsumptionByInterval, auth.SendAuthError))
 }
 
 func SetWebsocket(e *echo.Echo) *websocket.Hub {

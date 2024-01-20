@@ -12,7 +12,7 @@ import (
 
 type IUserUseCase interface {
 	ValidAccess(userName string, plantId primitive.ObjectID, ctx context.Context) *errors.RequestError
-	validLogin(userName, password string) (*entity.User, *errors.RequestError)
+	ValidLogin(userName, password string, ctx context.Context) (*entity.User, *errors.RequestError)
 	// CreateUser(entity.User) error
 	// liberarPlantaParaUsuario(userName string, plantId primitive.ObjectID)
 }

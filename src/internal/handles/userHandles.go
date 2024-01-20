@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Fernando-hub527/candieiro/internal/dtos"
-	"github.com/Fernando-hub527/candieiro/internal/pkg/jwt"
+	jwt "github.com/Fernando-hub527/candieiro/internal/pkg/auth"
 	"github.com/Fernando-hub527/candieiro/internal/useCase/user"
 	"github.com/labstack/echo/v4"
 )
