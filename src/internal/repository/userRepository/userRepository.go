@@ -2,6 +2,7 @@ package userrepository
 
 import (
 	"context"
+	"time"
 
 	"github.com/Fernando-hub527/candieiro/internal/entity"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/errors"
@@ -33,6 +34,8 @@ func (repository *userRepository) CreateUser(user entity.User, ctx context.Conte
 }
 
 func (repository *userRepository) FindUserByNameOrEmail(name string, email string, ctx context.Context) (*entity.User, *errors.RequestError) {
+	newCtx, _ := context.WithTimeout(ctx, 2*time.Second)
+
 	filter := bson.D{
 		{Key: "$or",
 			Value: bson.A{
@@ -43,7 +46,7 @@ func (repository *userRepository) FindUserByNameOrEmail(name string, email strin
 	}
 
 	var userResult entity.User
-	err := repository.collPoint.FindOne(context.TODO(), filter).Decode(&userResult)
+	err := repository.collPoint.FindOne(newCtx, filter).Decode(&userResult)
 	if err != nil {
 		return nil, errors.NewErrorNotFound("User not found")
 	}

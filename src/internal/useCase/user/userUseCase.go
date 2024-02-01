@@ -63,7 +63,7 @@ func (useCase *UserUseCase) ValidLogin(userName, password string, ctx context.Co
 func (useCase *UserUseCase) ValidAccess(userName string, plantId primitive.ObjectID, ctx context.Context) *errors.RequestError {
 	user, err := useCase.repository.FindUserByNameOrEmail(userName, "", ctx)
 	if err != nil {
-		return errors.NewErrorAccessDenied("Unregistered user")
+		return errors.NewErrorAccessDenied("Unable to validate credentials")
 	}
 
 	for _, plan := range user.PlanId {
@@ -72,5 +72,5 @@ func (useCase *UserUseCase) ValidAccess(userName string, plantId primitive.Objec
 		}
 	}
 
-	return errors.NewErrorAccessDenied("Unregistered user")
+	return errors.NewErrorAccessDenied("Unable to validate credentials")
 }
