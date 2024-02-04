@@ -31,7 +31,7 @@ func NewUserCase(repository userrepository.IUserRepository) *UserUseCase {
 func (useCase *UserUseCase) CreateUser(newUser dtos.NewUserDTO, ctx context.Context) (*entity.User, *errors.RequestError) {
 	_, err := useCase.repository.FindUserByNameOrEmail(newUser.UserName, newUser.Email, ctx)
 	if err == nil {
-		return nil, errors.NewErrorAlreadyRegisteredUser("user" + newUser.UserName + "x is already registered")
+		return nil, errors.NewErrorAlreadyRegisteredUser("user " + newUser.UserName + " is already registered")
 	}
 
 	user, errNewUser := entity.FactoryNewUser(newUser)
