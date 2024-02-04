@@ -18,3 +18,8 @@ func ValidParams(values [][2]string, validator map[string]func(string) *errors.R
 	}
 	return nil
 }
+
+func ParseType[T interface{}](object interface{}) *T {
+	obj, _ := object.(*T)
+	return obj
+}
