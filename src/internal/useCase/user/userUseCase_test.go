@@ -95,3 +95,37 @@ func TestValidLogin(t *testing.T) {
 		assert.Equal(t, expectedError, err)
 	})
 }
+
+func TestValidCreateUser(t *testing.T) {
+	repository := repository.NewMockUserRepository()
+	useCase := user.NewUserCase(repository)
+
+	t.Run("If the user is already registered, error is returned", func(t *testing.T) {
+		userDto := dtos.NewUserDTO{UserName: "fernando", Password: "123456", Email: "fernando.saraiva@gmail.com", Telephone: 77998574669}
+		user, _ := entity.FactoryNewUser(userDto)
+
+		repository.On("FindUserByNameOrEmail", user.UserName, user.Email, context.TODO()).Return(user, nil)
+
+		userFound, err := useCase.CreateUser(userDto, context.TODO())
+		expectedError := errors.NewErrorAlreadyRegisteredUser("user " + user.UserName + " is already registered")
+		expectedError.Time = err.Time
+
+		assert.Nil(t, userFound)
+		assert.Equal(t, expectedError, err)
+	})
+
+	t.Run("if valid user is sent, user is returned", func(t *testing.T) {
+		userDto := dtos.NewUserDTO{UserName: "fernando", Password: "123456", Email: "fernando.saraiva@gmail.com", Telephone: 77998574669}
+		user, _ := entity.FactoryNewUser(userDto)
+
+		repository.On("FindUserByNameOrEmail", user.UserName, user.Email, context.TODO()).Return(user, nil)
+		repository.On("CreateUser", user, context.TODO()).Return(nil)
+
+		userFound, err := useCase.CreateUser(userDto, context.TODO())
+		expectedError := errors.NewErrorAlreadyRegisteredUser("user " + user.UserName + " is already registered")
+		expectedError.Time = err.Time
+
+		assert.Nil(t, userFound)
+		assert.Equal(t, expectedError, err)
+	})
+}
