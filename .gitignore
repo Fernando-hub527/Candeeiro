@@ -1,7 +1,8 @@
-.vscode/launch.json
+.vscode/
 medidor_de_tensao/.vscode/
 src/internal/cmd/__debug_bin3648794601
 medidor_de_tensao/test/README
 medidor_de_tensao/include/README
 medidor_de_tensao/lib/README
 medidor_de_tensao/.pio/
+medidor_de_tensao/medidor_de_tensao.code-workspace
