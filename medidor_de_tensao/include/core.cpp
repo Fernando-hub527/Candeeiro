@@ -12,20 +12,20 @@ boolean updatePowerOnServer(UpdateErrorCallback callback, float power){
 
 }
 
-boolean sendMeasurementRecord(UpdateErrorCallback callback){
+boolean sendMeasurementRecord(UpdateErrorCallback callback, ConsumptionRecord consumption){
 
 }
 
-void resetMeasurementPeriod(){
+void resetMeasurementPeriod(ConsumptionRecord consumption){
 
 }
 
 
-boolean validateMeasurementPeriod(){
+boolean validateMeasurementPeriod(ConsumptionRecord consumption){
 
 }
 
-void recordsMeasurementInPeriod(){
+void recordsMeasurementInPeriod(ConsumptionRecord consumption){
     
 }
 

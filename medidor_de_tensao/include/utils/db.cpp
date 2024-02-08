@@ -6,4 +6,8 @@ void recordError(String message, String topic){
 
 }
 
+Settings loadSetting(const char* fileSettings){
+
+}
+
 #endif
