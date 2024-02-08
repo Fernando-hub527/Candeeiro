@@ -1,18 +1,24 @@
 #include <Arduino.h>
+#include "ACS712.h"
+#include "core.cpp"
+#include "utils/db.cpp"
 
-// put function declarations here:
-int myFunction(int, int);
+ACS712 sensor(ACS712_20A, 4);
+const int volts = 230;
+
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(9600);
+  sensor.calibrate();
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
+  float power = getPower();
+  updatePowerOnServer(recordError, power);
+  if (validateMeasurementPeriod()){
+    sendMeasurementRecord(recordError);
+    resetMeasurementPeriod();
+  }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
 }

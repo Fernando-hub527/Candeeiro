@@ -3,10 +3,10 @@ Sistema voltado para o controle do consumo de energia, permitindo o monitorament
 
 ## Definição de requisitos
 
-O sistema é formado por três componentes que trabalham em conjunto para permitir que o objetivo descrito anteriomente seja alcançado. Esses componentes são:
+O sistema é formado por três componentes que trabalham em conjunto para permitir que o objetivo descrito anteriormente seja alcançado. Esses componentes são:
 
 * Dispositivo
-    </br>O disposito tem como responsibilidade coletar o consumo de determinado equipamento e realizar o envio dessa informação para o servidor. Ele deve também realizar desligamentos programados em determinados períodos.
+    </br>O dispositivo tem como responsabilidade coletar o consumo de determinado equipamento e realizar o envio dessa informação para o servidor. Ele deve também realizar desligamentos programados em determinados períodos.
 * Api
     </br>A api tem como responsabilidade ser o intermediário entre os clientes e os pontos de consumo, precisando assim disponibilizar um interface para cada. 
     </br>A interface com o dispositivo deve ser capaz de realizar o processamento dos dados recebidos assim como o envio de comandos de desligamento.
@@ -19,7 +19,7 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
 
 ### Dispositivos:
 
-* Os dispositivos devem realizr o envio do consumo atual e do consumo por período, sendo que o consumo atual deve ser enviado sempre que houver variação no consumo, enquanto o consumo por período deve ser enviado de acordo intervalo de tempo configurado. Além dessas informações o equipamento deve informar sobre seu estado de funcionamento. Os dados devem seguir o seguinte padrão:
+* Os dispositivos devem realizar o envio do consumo atual e do consumo por período, sendo que o consumo atual deve ser enviado sempre que houver variação no consumo, enquanto o consumo por período deve ser enviado de acordo intervalo de tempo configurado. Além dessas informações o equipamento deve informar sobre seu estado de funcionamento. Os dados devem seguir o seguinte padrão:
 </br>
 
 1. Consumo atual:</br>
@@ -44,14 +44,14 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
 * A interface com o cliente deve ser feita através de métodos http, onde será possível acessar os recursos da aplicação, e via websocket, de forma que seja possível acessar os dados em tempo real, as interfaces terão a seguinte estrutura: <br>
 
 1. Listagem de pontos 
-    - Metodo: GET
+    - Método: GET
     - Rota: api/v1/candieiro/plant/points
     - Querys: 
         - plantId: number
     - Retornos: [{id: int, name: string, lastConsumer: float}]
 
 2. Listagem de consumo por ponto e intervalo
-    - Metodo: GET
+    - Método: GET
     - Rota: api/v1/candieiro/plant/point/consumption
     - Querys:
         - startMoment: Date
@@ -60,14 +60,14 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
     - Retornos: [{startMoment: Date, endMoment: Date, value: float, kW: float}]
 
 3. Listagem de desligamentos por ponto
-    - Metodo: GET
+    - Método: GET
     - Rota: api/v1/candieiro/plant/point/shutdowns
     - Querys:
         - pointId: Int
     - Retornos: [{startShutdown: Date, endShutdown: Date}]
 
 4. Cadastro de desligamento
-    - Metodo: POST
+    - Método: POST
     - Rota: api/v1/candieiro/plant/point/shutdown
     - Body:
         - pointId: Int
@@ -76,7 +76,7 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
     - Retornos: {startShutdown: Date, endShutdown: Date}
 
 5. Cadastro de usuário
-    - Metodo: POST
+    - Método: POST
     - Rota: api/v1/candieiro/user
     - Body:
         - userName: string
@@ -84,19 +84,19 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
         - email: string
 
 6. Cadastro de planta
-    - Metodo: POST
+    - Método: POST
     - Rota: api/v1/candieiro/plant
     - Body:
         - name: string
 
 7. Cadastro de ponto de consumo
-    - Metodo: POST
+    - Método: POST
     - Rota: api/v1/candieiro/plant/point
     - Body:
         - plantId: number
 
 8. Remoção de desligamento
-    - Metodo: DELETE
+    - Método: DELETE
     - Rota: api/v1/candieiro/point/shutdown
     - Query:
         - shutdownId: Int
