@@ -23,11 +23,11 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
 </br>
 
 1. Consumo atual:</br>
-**{"kw_h": number, "time": number, "deviceId": number}**
+**{"kw_h": number, "time": number, "serialNumber": number}**
 </br>
 
 2. Consumo por intervalo:</br>
-**{"kw": number, "startTime": number, "endTime": number, "deviceId": number}**
+**{"kw": number, "startTime": number, "endTime": number, "serialNumber": number}**
 
 3. Funcionamento: <br>
 **{"on": boolean, "time": number, "deviceId": number}**

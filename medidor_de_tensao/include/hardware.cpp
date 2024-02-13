@@ -7,10 +7,13 @@
 
 ACS712 sensor(ACS712_20A, 4);
 
-void startHardware(){
-    if(LittleFS.begin(true)){
-        
+void startHardware(boolean calibrate){
+    if(!LittleFS.begin(true)){
+        Serial.println("Falha ao abrir sistema de arquivos");
+        ESP.restart();
     }
+
+    if(calibrate)sensor.calibrate();
 }
 
 float readAcs712(){

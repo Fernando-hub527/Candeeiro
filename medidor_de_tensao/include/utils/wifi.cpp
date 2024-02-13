@@ -9,21 +9,31 @@ WiFiClient espClient;
 PubSubClient clientMqtt(espClient);
 
 
-boolean startWiFi(const char* ssid, const char *password){
-    if(WiFi.status() == WL_CONNECTED) return true;
-
+boolean startWiFi(const char* ssid, const char *password, unsigned long *lastConnection, unsigned long connectionInterval){
+    if(WiFi.status() == WL_CONNECTED || (millis() - *(lastConnection)) < connectionInterval ) return WiFi.status() == WL_CONNECTED;
     WiFi.begin();
-    while (WiFi.status() != WL_CONNECTED){
-        delay(10);
-    }
 
-    return true;
-    
+    return WiFi.status() == WL_CONNECTED;
 }
 
-boolean setCommunicationBroker(const char * ip, int port, MQTT_CALLBACK_SIGNATURE){
+void setCommunicationBroker(const char * ip, int port, MQTT_CALLBACK_SIGNATURE){
     clientMqtt.setServer(ip, port);
-    clientMqtt.setCallback(callback);
+}
+
+boolean reconnectBroker(const char *ssid, const char *password, const char* idMqtt, unsigned long *lastConnection){
+    if(startWiFi(ssid, password, lastConnection, 30000)) return false;
+
+    if(!clientMqtt.connected()){
+        if(clientMqtt.connect(idMqtt)) Serial.println("Conectado.");
+        else return false;
+    }
+
+    clientMqtt.loop();
+    return true;
+}
+
+boolean sendMessageToServer(String message, String topic){
+    return clientMqtt.publish(topic.c_str(), message.c_str());
 }
 
 #endif
