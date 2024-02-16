@@ -5,17 +5,17 @@
 #include "types.cpp"
 #include "utils/mqtt.cpp"
 
-boolean updatePowerOnServer(UpdateErrorCallback callback, float power){
+String makeMessageCurrentConsumption(int kwh, unsigned long time, int serialNumber){
+  return "{\"kw_h\": "+ String(kwh) +", \"time\": "+ time +", \"serialNumber\": "+ serialNumber +"}";
 }
 
-boolean sendMeasurementRecord(UpdateErrorCallback callback, ConsumptionRecord consumption){
-
+String makeMessageConsumption(ConsumptionRecord consumption, int serialNumber){
+  return "{\"kw\": "+ String(consumption.fullPower) +", \"startTime\": "+ consumption.startConsumption +", \"endTime\": "+ consumption.endConsumption +", \"serialNumber\": "+ serialNumber +"}";
 }
 
 float calculateKwh(float current){
     return current * 3600;
 }
-
 
 ConsumptionRecord resetMeasurementPeriod(unsigned long currentTime){
     return {currentTime, 0, 0, 0};

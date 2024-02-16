@@ -16,7 +16,7 @@ func main() {
 		panic("Falha ao se conectar ao banco \n")
 	}
 
-	broker, errBroker := broker.NewBrokerRabbit("amqp://iot:iot@localhost:5673/")
+	broker, errBroker := broker.NewBrokerRabbit("amqp://iot:iot@192.168.1.156:5673/")
 	if errBroker != nil {
 		panic("Falha ao conectar no broker")
 	}

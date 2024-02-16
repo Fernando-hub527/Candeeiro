@@ -28,8 +28,8 @@ func NewElectricityHandles(broker rabbitmq.IBroker, hub *websocket.Hub, userUseC
 		userUseCase:        userUseCase,
 		electricityUseCase: electricityUseCase,
 	}
-	go elc.recordConsumption(broker, "consumptio/electicity/record")
-	go elc.updateConsumption(broker, "consumptio/electicity/update")
+	// go elc.recordConsumption(broker, "electicity_record")
+	go elc.updateConsumption(broker, "electicity_update")
 	return elc
 }
 

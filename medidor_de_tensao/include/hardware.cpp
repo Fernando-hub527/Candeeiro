@@ -5,10 +5,10 @@
 #include "LittleFS.h"
 #include "ACS712.h"
 
-ACS712 sensor(ACS712_20A, 4);
+ACS712 sensor(ACS712_20A, A0);
 
 void startHardware(boolean calibrate){
-    if(!LittleFS.begin(true)){
+    if(!LittleFS.begin()){
         Serial.println("Falha ao abrir sistema de arquivos");
         ESP.restart();
     }

@@ -16,6 +16,8 @@ struct Settings{
     const char *password;
     unsigned int serialNumber;
     const char *ipBroker;
+    const char *useBroker;
+    const char *passwordBroker;
     const char *currentConsumption;
     const char *consumptionPeriod;
     int brokerDoor;
@@ -24,5 +26,4 @@ struct Settings{
 
 const char* fileSetting = "fileSettings.txt";
 unsigned long lastConnection = 0;
-
 #endif

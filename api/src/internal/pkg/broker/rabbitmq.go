@@ -6,7 +6,7 @@ import (
 )
 
 type Broker struct {
-	channel *amqp091.Channel
+	channel amqp091.Channel
 }
 
 func NewBrokerRabbit(url string) (*Broker, *errors.RequestError) {
@@ -15,7 +15,7 @@ func NewBrokerRabbit(url string) (*Broker, *errors.RequestError) {
 		return nil, errors.NewInternalErros("Unable to connect to broker")
 	}
 	return &Broker{
-		channel: chAmqp,
+		channel: *chAmqp,
 	}, nil
 }
 
@@ -35,19 +35,19 @@ func openChannel(url string) (*amqp091.Channel, error) {
 
 func (broker *Broker) Consumer(queue string) chan IBrokerMessager {
 	chanMessage := make(chan IBrokerMessager)
-	go broker.listenToQueues(chanMessage, broker.channel, queue)
+	go broker.listenToQueues(chanMessage, queue)
 	return chanMessage
 }
 
-func (broker *Broker) listenToQueues(channel chan IBrokerMessager, channelRabbit *amqp091.Channel, queue string) error {
-	msgs, err := channelRabbit.Consume(
+func (broker *Broker) listenToQueues(channel chan IBrokerMessager, queue string) error {
+	msgs, err := broker.channel.Consume(
 		queue,
 		"electricity_consumption",
 		false, false, false, false, nil,
 	)
 
 	if err != nil {
-		return err
+		panic(err)
 	}
 
 	for msg := range msgs {
