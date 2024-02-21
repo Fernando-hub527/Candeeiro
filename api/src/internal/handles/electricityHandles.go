@@ -14,6 +14,7 @@ import (
 	"github.com/Fernando-hub527/candieiro/internal/useCase/electricity"
 	"github.com/Fernando-hub527/candieiro/internal/useCase/user"
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type ElectricityHandles struct {
@@ -104,13 +105,12 @@ func (elc *ElectricityHandles) recordConsumption(broker broker.IBroker, queue st
 
 func (elc *ElectricityHandles) updateConsumption(broker broker.IBroker, queue string) {
 	chanMessager := broker.Consumer(queue)
-
+	fmt.Println(primitive.NewObjectID())
 	for msg := range chanMessager {
 		var consuDTO dtos.ConsumptionFluctuationRequestDTO
-
 		if err := json.Unmarshal(msg.GetMessager(), &consuDTO); err != nil {
 			fmt.Println("Falha ao dessrializar json")
-			msg.Reject()
+			msg.Accept()
 		} else {
 			if _, err := elc.electricityUseCase.FindPointById(consuDTO.PointId, context.TODO()); err != nil {
 				fmt.Println("Dados decebidos de ponto de consumo não registrado ", consuDTO.PointId)
