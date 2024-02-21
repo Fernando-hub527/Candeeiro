@@ -6,6 +6,7 @@ import (
 
 	"github.com/Fernando-hub527/candieiro/internal/dtos"
 	"github.com/Fernando-hub527/candieiro/internal/entity"
+	"github.com/Fernando-hub527/candieiro/internal/entity/consumption"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/errors"
 	timetools "github.com/Fernando-hub527/candieiro/internal/pkg/utils/timeTools"
 	consumutionrepository "github.com/Fernando-hub527/candieiro/internal/repository/consumutionRepository"
@@ -16,8 +17,8 @@ import (
 type IElectricityUseCase interface {
 	FindPointById(pointId primitive.ObjectID, ctx context.Context) (*entity.Point, *errors.RequestError)
 	ListPointsByPlant(plantId primitive.ObjectID, ctx context.Context) (*[]entity.Point, *errors.RequestError)
-	ListConsumptionByIntervalAndPoint(pointId primitive.ObjectID, startMoment time.Time, endMoment time.Time, ctx context.Context) (*[]entity.Consumution, *errors.RequestError)
-	CreateConsumutionRecord(newConsumution dtos.NewConsumutionDTO) *errors.RequestError
+	ListConsumptionByIntervalAndPoint(pointId primitive.ObjectID, startMoment time.Time, endMoment time.Time, ctx context.Context) (*[]consumption.Consumution, *errors.RequestError)
+	CreateConsumutionRecord(newConsumution dtos.ConsumptionRecordRequestDTO) *errors.RequestError
 }
 
 type ElectricityUseCase struct {
@@ -40,7 +41,7 @@ func (elc *ElectricityUseCase) ListPointsByPlant(plantId primitive.ObjectID, ctx
 	return elc.repository.ListPointsByPlan(plantId, ctx)
 }
 
-func (elc *ElectricityUseCase) ListConsumptionByIntervalAndPoint(pointId primitive.ObjectID, startMoment time.Time, endMoment time.Time, ctx context.Context) (*[]entity.Consumution, *errors.RequestError) {
+func (elc *ElectricityUseCase) ListConsumptionByIntervalAndPoint(pointId primitive.ObjectID, startMoment time.Time, endMoment time.Time, ctx context.Context) (*[]consumption.Consumution, *errors.RequestError) {
 	_, err := elc.repository.FindPointById(pointId, ctx)
 	if err != nil {
 		return nil, err
@@ -54,13 +55,13 @@ func (elc *ElectricityUseCase) ListConsumptionByIntervalAndPoint(pointId primiti
 	return elc.repositoryConsumution.ListConsumutionByIntervalAndPoint(startMoment, endMoment, pointId, ctx)
 }
 
-func (elc *ElectricityUseCase) CreateConsumutionRecord(newConsumution dtos.NewConsumutionDTO) *errors.RequestError {
+func (elc *ElectricityUseCase) CreateConsumutionRecord(newConsumution dtos.ConsumptionRecordRequestDTO) *errors.RequestError {
 	_, err := elc.FindPointById(newConsumution.PointId, context.TODO())
 	if err != nil {
 		return err
 	}
 
-	newRecord, err := entity.FactoryConsumution(newConsumution)
+	newRecord, err := newConsumution.ParseToConsumptionRecord()
 	if err != nil {
 		return err
 	}
@@ -73,7 +74,7 @@ func (elc *ElectricityUseCase) CreateConsumutionRecord(newConsumution dtos.NewCo
 	}
 }
 
-func updateConsumution(record entity.Consumution, newRecord entity.Consumution) *entity.Consumution {
+func updateConsumution(record consumption.Consumution, newRecord consumption.Consumution) *consumption.Consumution {
 	record.EndOfConsumption = newRecord.EndOfConsumption
 	record.Cost += newRecord.Cost
 	record.Kw += newRecord.Kw

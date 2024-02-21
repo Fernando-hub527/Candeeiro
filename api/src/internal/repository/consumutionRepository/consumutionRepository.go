@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/Fernando-hub527/candieiro/internal/entity"
+	"github.com/Fernando-hub527/candieiro/internal/entity/consumption"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -13,9 +13,9 @@ import (
 )
 
 type IConsumutionRepository interface {
-	ListConsumutionByIntervalAndPoint(startMoment time.Time, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*[]entity.Consumution, *errors.RequestError)
-	UpdateConsumutionOrCreate(consumution entity.Consumution) *errors.RequestError
-	FindConsumutionRecordByIntervalAndPoint(startMoment, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*entity.Consumution, *errors.RequestError)
+	ListConsumutionByIntervalAndPoint(startMoment time.Time, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*[]consumption.Consumution, *errors.RequestError)
+	UpdateConsumutionOrCreate(consumution consumption.Consumution) *errors.RequestError
+	FindConsumutionRecordByIntervalAndPoint(startMoment, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*consumption.Consumution, *errors.RequestError)
 }
 
 type ConsumutionRepository struct {
@@ -28,7 +28,7 @@ func New(database *mongo.Database) *ConsumutionRepository {
 	}
 }
 
-func (repository *ConsumutionRepository) ListConsumutionByIntervalAndPoint(startMoment time.Time, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*[]entity.Consumution, *errors.RequestError) {
+func (repository *ConsumutionRepository) ListConsumutionByIntervalAndPoint(startMoment time.Time, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*[]consumption.Consumution, *errors.RequestError) {
 	filter := bson.D{
 		{Key: "$and",
 			Value: bson.A{
@@ -44,7 +44,7 @@ func (repository *ConsumutionRepository) ListConsumutionByIntervalAndPoint(start
 		return nil, errors.NewInternalErros("Unable to list consumption")
 	}
 
-	var consumution []entity.Consumution
+	var consumution []consumption.Consumution
 
 	if err := cursor.All(ctx, &consumution); err != nil {
 		return nil, errors.NewInternalErros("Unable to list consumption")
@@ -53,7 +53,7 @@ func (repository *ConsumutionRepository) ListConsumutionByIntervalAndPoint(start
 	return &consumution, nil
 }
 
-func (repository *ConsumutionRepository) FindConsumutionRecordByIntervalAndPoint(startMoment, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*entity.Consumution, *errors.RequestError) {
+func (repository *ConsumutionRepository) FindConsumutionRecordByIntervalAndPoint(startMoment, endMoment time.Time, pointId primitive.ObjectID, ctx context.Context) (*consumption.Consumution, *errors.RequestError) {
 	filter := bson.D{
 		{Key: "$and",
 			Value: bson.A{
@@ -64,7 +64,7 @@ func (repository *ConsumutionRepository) FindConsumutionRecordByIntervalAndPoint
 		},
 	}
 
-	var consumption entity.Consumution
+	var consumption consumption.Consumution
 	if err := repository.collConsumution.FindOne(ctx, filter).Decode(&consumption); err != nil {
 		return nil, errors.NewInternalErros("Could not find point consumption in the interval")
 	}
@@ -72,7 +72,7 @@ func (repository *ConsumutionRepository) FindConsumutionRecordByIntervalAndPoint
 	return &consumption, nil
 }
 
-func (repository *ConsumutionRepository) UpdateConsumutionOrCreate(consumution entity.Consumution) *errors.RequestError {
+func (repository *ConsumutionRepository) UpdateConsumutionOrCreate(consumution consumption.Consumution) *errors.RequestError {
 	filter := bson.D{{Key: "_id", Value: consumution.Id}}
 	update := bson.D{{Key: "$set", Value: consumution}}
 	opts := options.Update().SetUpsert(true)

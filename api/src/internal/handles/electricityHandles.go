@@ -91,7 +91,7 @@ func (elc *ElectricityHandles) recordConsumption(broker broker.IBroker, queue st
 	chanMessager := broker.Consumer(queue)
 
 	for msg := range chanMessager {
-		var consuDTO dtos.NewConsumutionDTO
+		var consuDTO dtos.ConsumptionRecordRequestDTO
 		if err := json.Unmarshal(msg.GetMessager(), &consuDTO); err != nil {
 			fmt.Println("Falha ao dessrializar json")
 			msg.Reject()
@@ -106,7 +106,8 @@ func (elc *ElectricityHandles) updateConsumption(broker broker.IBroker, queue st
 	chanMessager := broker.Consumer(queue)
 
 	for msg := range chanMessager {
-		var consuDTO dtos.RealTimeConsumptionDTO
+		var consuDTO dtos.ConsumptionFluctuationRequestDTO
+
 		if err := json.Unmarshal(msg.GetMessager(), &consuDTO); err != nil {
 			fmt.Println("Falha ao dessrializar json")
 			msg.Reject()
@@ -114,7 +115,8 @@ func (elc *ElectricityHandles) updateConsumption(broker broker.IBroker, queue st
 			if _, err := elc.electricityUseCase.FindPointById(consuDTO.PointId, context.TODO()); err != nil {
 				fmt.Println("Dados decebidos de ponto de consumo não registrado ", consuDTO.PointId)
 			} else {
-				elc.hub.Messages <- map[string][]byte{consuDTO.PointId.String(): msg.GetMessager()}
+				message, _ := consuDTO.ParseToConsumptionFluctuation().ToJson()
+				elc.hub.Messages <- map[string][]byte{consuDTO.PointId.String(): message}
 			}
 			msg.Accept()
 		}

@@ -7,6 +7,7 @@ import (
 
 	"github.com/Fernando-hub527/candieiro/internal/dtos"
 	"github.com/Fernando-hub527/candieiro/internal/entity"
+	"github.com/Fernando-hub527/candieiro/internal/entity/consumption"
 	"github.com/Fernando-hub527/candieiro/internal/infra/mocks/repository"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/errors"
 	"github.com/Fernando-hub527/candieiro/internal/useCase/electricity"
@@ -57,7 +58,7 @@ func TestListConsumptionByIntervalAndPoint(t *testing.T) {
 
 	t.Run("if parameter is valid, consumption is returned", func(t *testing.T) {
 		pointId := primitive.NewObjectID()
-		var expectedConsumution = []entity.Consumution{{Id: primitive.NewObjectID(), PointId: pointId, Kw: 150, Cost: 10, StartOfConsumption: time.Now(), EndOfConsumption: time.Now()}}
+		var expectedConsumution = []consumption.Consumution{{Id: primitive.NewObjectID(), PointId: pointId, Kw: 150, Cost: 10, StartOfConsumption: time.Now(), EndOfConsumption: time.Now()}}
 
 		pointRepository.On("FindPointById", pointId, context.TODO()).Return(entity.Point{PlanId: primitive.NewObjectID(), Id: pointId, State: false, Rele: false, Alert: 0}, nil)
 		consumutionRepository.On("ListConsumutionByIntervalAndPoint", expectedConsumution[0].StartOfConsumption, expectedConsumution[0].EndOfConsumption, pointId, context.TODO()).Return(&expectedConsumution, nil)
@@ -76,7 +77,7 @@ func TestCreateConsumution(t *testing.T) {
 	t.Run("If point is not found, error is returned", func(t *testing.T) {
 		pointId := primitive.NewObjectID()
 		pointRepository.On("FindPointById", pointId, context.TODO()).Return(nil, errors.NewErrorNotFound("Point not found"))
-		err := electricityUseCase.CreateConsumutionRecord(dtos.NewConsumutionDTO{Kw: 55, StartTime: time.Now(), EndTime: time.Now(), PointId: pointId})
+		err := electricityUseCase.CreateConsumutionRecord(dtos.ConsumptionRecordRequestDTO{Kw: 55, StartTime: time.Now(), EndTime: time.Now(), PointId: pointId})
 		expectedError := errors.NewErrorNotFound("Point not found")
 		expectedError.Time = err.Time
 
@@ -87,7 +88,7 @@ func TestCreateConsumution(t *testing.T) {
 		pointId := primitive.NewObjectID()
 		pointRepository.On("FindPointById", pointId, context.TODO()).Return(entity.Point{PlanId: primitive.NewObjectID(), Id: pointId, State: false, Rele: false, Alert: 0}, nil)
 
-		err := electricityUseCase.CreateConsumutionRecord(dtos.NewConsumutionDTO{Kw: 55, StartTime: time.Now().Add(5 * time.Hour), EndTime: time.Now(), PointId: pointId})
+		err := electricityUseCase.CreateConsumutionRecord(dtos.ConsumptionRecordRequestDTO{Kw: 55, StartTime: time.Now().Add(5 * time.Hour), EndTime: time.Now(), PointId: pointId})
 		expectedError := errors.NewErrorInvalidParamns("Consumption with a greater interval than allowed")
 		expectedError.Time = err.Time
 

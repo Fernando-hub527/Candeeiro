@@ -1,31 +1,32 @@
 package dtos
 
 import (
-	"encoding/json"
 	"time"
 
+	"github.com/Fernando-hub527/candieiro/internal/entity/consumption"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type NewConsumutionDTO struct {
+type ConsumptionRecordRequestDTO struct {
 	Kw        uint32
 	StartTime time.Time
 	EndTime   time.Time
 	PointId   primitive.ObjectID
 }
 
-func FactoryDTO[T interface{}](jsonDTO string) (*T, *errors.RequestError) {
-	var result T
-	if err := json.Unmarshal([]byte(jsonDTO), &result); err != nil {
-		return nil, errors.NewErrorInvalidParamns("Unable to deserialize message from point:\n" + jsonDTO)
-	}
-	return &result, nil
+func (c *ConsumptionRecordRequestDTO) ParseToConsumptionRecord() (*consumption.Consumution, *errors.RequestError) {
+	return consumption.FactoryConsumution(consumption.FactoryConsumptionCost(), c.PointId, c.Kw, c.EndTime, c.StartTime)
 }
 
-type RealTimeConsumptionDTO struct {
-	Kwh       uint32
-	CreatedAt time.Time
-	Cost      uint32
-	PointId   primitive.ObjectID
+type ConsumptionFluctuationRequestDTO struct {
+	Kwh       uint32             `json:"kw_h"`
+	CreatedAt time.Time          `json:"time"`
+	PointId   primitive.ObjectID `json:"SerialNumber"`
 }
+
+func (c *ConsumptionFluctuationRequestDTO) ParseToConsumptionFluctuation() *consumption.ConsumptionFluctuation {
+	return consumption.FactoryConsumptionFluctuation(consumption.FactoryConsumptionCost(), c.PointId, c.Kwh, c.CreatedAt)
+}
+
+//   return "{\"kw_h\": "+ String(kwh) +", \"time\": "+ time +", \"serialNumber\": "+ serialNumber +"}";

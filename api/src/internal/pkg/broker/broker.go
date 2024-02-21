@@ -10,3 +10,7 @@ type IBrokerMessager interface {
 	Accept() error
 	GetMessager() []byte
 }
+
+func deserializeMessage[T any]() {
+
+}
