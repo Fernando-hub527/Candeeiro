@@ -1,7 +1,7 @@
 # candieiro
 Sistema voltado para o controle do consumo de energia, permitindo o monitoramento em tempo real e análise de histórico
 
-## Definição de requisitos
+## Estrutura do projeto
 
 O sistema é formado por três componentes que trabalham em conjunto para permitir que o objetivo descrito anteriormente seja alcançado. Esses componentes são:
 
@@ -14,6 +14,14 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
 
 * Front end
     </br>O front end tem como responsabilidade disponibilizar meios para que o cliente final visualize o consumo das plantas que lhe pertencerem, permitindo a análise do histórico de consumo e o consumo em tempo real da sua planta. Os clientes devem ser capazes de criar plantas e pontos, assim como realizar a configuração dos mesmos
+
+
+### Front end
+* [Layout](https://www.figma.com/proto/G1kRgE8UhwIORM50gpifcN/Untitled?type=design&node-id=12-207&t=846PHO928oQLGeWW-1&scaling=scale-down&page-id=0%3A1&mode=design)
+### Back end
+
+
+### device
 
 ## Contratos de interfaces:
 
@@ -36,69 +44,3 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
 
 1. Desligamentos: </br>
 **{"startTime": number, "endTime": number, "recurrent": boolean}**
-
-### Api:
-
-* A interface da api com o dispositivo deve respeitar o que for definido pelo dispositivo
-
-* A interface com o cliente deve ser feita através de métodos http, onde será possível acessar os recursos da aplicação, e via websocket, de forma que seja possível acessar os dados em tempo real, as interfaces terão a seguinte estrutura: <br>
-
-1. Listagem de pontos 
-    - Método: GET
-    - Rota: api/v1/candieiro/plant/points
-    - Querys: 
-        - plantId: number
-    - Retornos: [{id: int, name: string, lastConsumer: float}]
-
-2. Listagem de consumo por ponto e intervalo
-    - Método: GET
-    - Rota: api/v1/candieiro/plant/point/consumption
-    - Querys:
-        - startMoment: Date
-        - endMoment: Date
-        - pointId: Int
-    - Retornos: [{startMoment: Date, endMoment: Date, value: float, kW: float}]
-
-3. Listagem de desligamentos por ponto
-    - Método: GET
-    - Rota: api/v1/candieiro/plant/point/shutdowns
-    - Querys:
-        - pointId: Int
-    - Retornos: [{startShutdown: Date, endShutdown: Date}]
-
-4. Cadastro de desligamento
-    - Método: POST
-    - Rota: api/v1/candieiro/plant/point/shutdown
-    - Body:
-        - pointId: Int
-        - startShutdown: Date
-        - endShutdonw: Date
-    - Retornos: {startShutdown: Date, endShutdown: Date}
-
-5. Cadastro de usuário
-    - Método: POST
-    - Rota: api/v1/candieiro/user
-    - Body:
-        - userName: string
-        - password: string
-        - email: string
-
-6. Cadastro de planta
-    - Método: POST
-    - Rota: api/v1/candieiro/plant
-    - Body:
-        - name: string
-
-7. Cadastro de ponto de consumo
-    - Método: POST
-    - Rota: api/v1/candieiro/plant/point
-    - Body:
-        - plantId: number
-
-8. Remoção de desligamento
-    - Método: DELETE
-    - Rota: api/v1/candieiro/point/shutdown
-    - Query:
-        - shutdownId: Int
-
-9. Login

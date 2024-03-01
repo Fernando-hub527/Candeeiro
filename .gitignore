@@ -6,3 +6,5 @@ medidor_de_tensao/include/README
 medidor_de_tensao/lib/README
 medidor_de_tensao/.pio/
 medidor_de_tensao/medidor_de_tensao.code-workspace
+front/node_modules/
+front/public/robots.txt

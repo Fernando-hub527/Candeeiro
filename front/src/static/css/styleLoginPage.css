@@ -1,0 +1,65 @@
+body{
+    background-image: url("../img/background.svg");   
+    height: 100vh;
+}
+
+.page_login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80vh;
+    margin: 0px;
+
+}
+
+.page_login .login_header{
+    display: flex ;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70%;
+    color: white;
+    font-family: "comfortaa";
+}
+
+.page_login form{
+    width: 80%;
+    margin-top: 15%;
+    height: fit-content;
+    
+}
+
+.page_login form div input{ 
+    width: 100%;
+    height: 6vh;
+    background-color: rgb(255, 255, 255);
+}
+.page_login form .form_password{
+    margin-top: 15%;
+}
+
+.page_login form .form_btn{
+    margin-top: 17%;
+    display: flex;
+    justify-content: space-between;
+    width: 103%;
+}
+
+.page_login form .form_btn button{
+    height: 7vh;
+    width: 28vw;
+    border: none;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 1000;
+}
+
+.page_login form .form_btn .btn-register{
+    background-color: black;
+    color: white;
+}
+
+.page_login form .form_btn button:active{
+    height: 7vh;
+    width: 27.5vw;
+
+}
