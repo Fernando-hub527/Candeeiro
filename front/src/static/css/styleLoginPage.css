@@ -1,9 +1,7 @@
-body{
-    background-image: url("../img/background.svg");   
-    height: 100vh;
-}
 
 .page_login{
+    background-image: url("../img/background.svg");   
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;

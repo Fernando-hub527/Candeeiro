@@ -1,11 +1,9 @@
 import "../../static/css/styleLoginPage.css"
-import logo from "../../static/img/logo.svg"
 import "@fontsource/comfortaa"
 
 export function LoginPage(props) {
     return <div className="page_login">
         <div className="login_header">
-            <img src={logo} />
             <h1>Candieiro</h1>
         </div>
         <form>
