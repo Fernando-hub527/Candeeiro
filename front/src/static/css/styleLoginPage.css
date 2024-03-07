@@ -19,6 +19,9 @@
     width: 10%;
     cursor: pointer;
 }
+.page_login .login_header img:active{
+    width: 9%;
+}
 
 .page_login form{
     display: flex;
@@ -99,6 +102,7 @@
     align-items: center;
     width: 100%;
     color: white;
+    margin-top: 10%;
 }
 .page_login .form_division hr{
     width: 40vw;
@@ -122,9 +126,28 @@
     height: 35%;
     background-color: #8f00cdff;
     color: white;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
 }
 
+.page_login .login_options button:active{
+    width: 69%;
+    height: 34%;
+}
+
+.page_login .login_options button p{
+    width: 100%;
+}
+
+.page_login .login_options button img{
+    width: 10%;
+    background-color: white;
+    border-radius: 300px;
+    margin-left: 0%;
+    justify-self: left;
+}
 /* 
 .page_login .login_header{
     display: flex ;
