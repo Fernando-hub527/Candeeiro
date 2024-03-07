@@ -1,6 +1,11 @@
 # candieiro
 Sistema voltado para o controle do consumo de energia, permitindo o monitoramento em tempo real e análise de histórico
 
+### Telas
+<img src="./front/layout/welcome_screen.jpeg" alt="Texto Alternativo"  width="150">
+<img src="./front/layout/login_screen.jpeg" alt="Texto Alternativo"  width="150">
+
+
 ## Estrutura do projeto
 
 O sistema é formado por três componentes que trabalham em conjunto para permitir que o objetivo descrito anteriormente seja alcançado. Esses componentes são:
@@ -14,6 +19,8 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
 
 * Front end
     </br>O front end tem como responsabilidade disponibilizar meios para que o cliente final visualize o consumo das plantas que lhe pertencerem, permitindo a análise do histórico de consumo e o consumo em tempo real da sua planta. Os clientes devem ser capazes de criar plantas e pontos, assim como realizar a configuração dos mesmos
+
+
 
 
 ## Contratos de interfaces:
