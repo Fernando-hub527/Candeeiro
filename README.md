@@ -16,13 +16,6 @@ O sistema é formado por três componentes que trabalham em conjunto para permit
     </br>O front end tem como responsabilidade disponibilizar meios para que o cliente final visualize o consumo das plantas que lhe pertencerem, permitindo a análise do histórico de consumo e o consumo em tempo real da sua planta. Os clientes devem ser capazes de criar plantas e pontos, assim como realizar a configuração dos mesmos
 
 
-### Front end
-* [Layout](https://www.figma.com/proto/G1kRgE8UhwIORM50gpifcN/Untitled?type=design&node-id=12-207&t=846PHO928oQLGeWW-1&scaling=scale-down&page-id=0%3A1&mode=design)
-### Back end
-
-
-### device
-
 ## Contratos de interfaces:
 
 ### Dispositivos:
