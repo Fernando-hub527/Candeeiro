@@ -1,4 +1,4 @@
-package api
+package main
 
 import (
 	"github.com/Fernando-hub527/candieiro/internal/handles"

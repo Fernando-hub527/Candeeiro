@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 
-	"github.com/Fernando-hub527/candieiro/internal/api"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/broker"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/mongodb"
 	"github.com/labstack/echo/v4"
