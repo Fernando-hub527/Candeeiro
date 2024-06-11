@@ -1,4 +1,4 @@
-# Candieiro
+# Candeeiro
 
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=DESENVOLVENDO%20FRONT&color=GREEN&style=for-the-badge)
 
