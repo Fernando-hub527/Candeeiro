@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: center;
     color: white;
-    width: 54%;
+    width: 59%;
     margin-left: 5%;
 }
 
@@ -36,7 +36,7 @@
     padding: 0px;
     width: 78vw;
     height: 10vw;
-    border: 0.2rem solid #8f00cdff;
+    border: 0.2rem solid rgb(107, 2, 151);
     color: white;
     padding-left: 2%;
     background-color: rgba(240, 248, 255, 0);
@@ -50,8 +50,8 @@
 
 .page_login form .form_input input::placeholder{
     color: rgb(255, 255, 255);
-    width: 30%;
-    text-align: center;
+    width: 50%;
+    text-align: left;
     font-size: 110%;
 } 
 
@@ -63,9 +63,9 @@
     position: absolute;
     justify-content: center;
     align-items: center;
-    width: 10%;
+    width: 8%;
     margin-left: 67%;
-    margin-top: -9%;
+    margin-top: -8%;
     cursor: pointer;
 }
 .page_login form .form_password .form_password_eye img{

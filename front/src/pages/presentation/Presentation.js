@@ -17,9 +17,9 @@ export function Presentation(props){
        
         <div className="form_btn">
             <button className="btn btn-login" onClick={() => openScreen("/login")}>LOG IN</button>
-            <button className="btn btn-register">REGISTER</button>
+            <button className="btn btn-register" onClick={() => openScreen("/register")}>REGISTER</button>
         </div>
-
+        
         <p className="page_presentation_obs">Esse projeto faz parte do meu <a href="">portifólio</a> e possui carater apenas demonstrativo</p>
     </div>
 }

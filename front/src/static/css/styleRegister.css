@@ -1,0 +1,9 @@
+.register_login .register_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    margin-top: 7%;
+    width: 60%;
+    margin-left: 5%;
+}

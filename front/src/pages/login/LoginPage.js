@@ -12,12 +12,18 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export function LoginPage(props) {
     const [passwordVisibility, setVisibility] = useState(false)
+    const [user, setUser] = useState("")
+    const [password, setPassword] = useState("")
+
     const navigate = useNavigate();
+
+    const validLoginData = (user, password) => {
+        
+    }
 
     const login = (e) => {
         toast("Usuário ou senha inválido", {type: "error"});
         e.preventDefault()
-
     }
     
 
@@ -28,10 +34,10 @@ export function LoginPage(props) {
         </div>
         <form>
             <div className="form_input form_user">
-                <input type="text" id="nickName" placeholder="Usuário" />
+                <input type="text" id="nickName" placeholder="Usuário" onChange={(e)=>setPassword(e.target.value)}/>
             </div>
             <div className="form_input form_password">
-                <input type={passwordVisibility ? "text":"password"} id="password" placeholder="Senha" />
+                <input type={passwordVisibility ? "text":"password"} id="password" placeholder="Senha" onChange={(e)=>setUser(e.target.value)}/>
                 <div className="form_password_eye" onClick={()=>setVisibility((state)=> !state)}>
                     <hr className={`form_password_eye-${passwordVisibility ? "visible" : "invisible"}`}/>
                     <img draggable={false} src={eyeIcon} alt="Icone roxo de um olho indicando se a senha está visível"/>

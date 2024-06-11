@@ -1,12 +1,38 @@
-# candieiro
+# Candieiro
+
+![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=DESENVOLVENDO%20FRONT&color=GREEN&style=for-the-badge)
+
 Sistema voltado para o controle do consumo de energia, permitindo o monitoramento em tempo real e análise de histórico
+Esse sistema faz parte do meu portifólio e tem a proposta de permitir o controle de consumo de energia em tempo real através da integração de um dispositivos de medição, uma API e um cliente Web. Todos os componentes da aplicação serão desenvolvidos internamentes e serão disponibilizados nesse repositório a medida que sejam finalizados.
+
+## ✔️ Técnicas e tecnologias utilizadas
+
+- ``Golang``
+- ``Postegresql``
+- ``WebSocket``
+- ``Rest``
+- ``Rabbitmq``
+- ``ReactJs``
+- ``Esp32``
+- ``C++``
+
+# :hammer:  Funcionalidades do projeto
+    * Login
+    * Cadastro de usuários
+    * Visualização de pontos de consumo
+    * Cadastrar ponto de consumo
+    * Atualizar ponto de consumo
+
+### Overview
+<img src="./doc/overview_application.png" alt="Texto Alternativo"  width="550">
 
 ### Telas
-<img src="./front/layout/welcome_screen.jpeg" alt="Texto Alternativo"  width="150">
-<img src="./front/layout/login_screen.jpeg" alt="Texto Alternativo"  width="150">
+<img src="./doc/layout/welcome_screen.jpeg" alt="Texto Alternativo"  width="150">
+<img src="./doc/layout/login_screen.jpeg" alt="Texto Alternativo"  width="150">
 
 
-## Estrutura do projeto
+</br></br>
+# Estrutura do projeto
 
 O sistema é formado por três componentes que trabalham em conjunto para permitir que o objetivo descrito anteriormente seja alcançado. Esses componentes são:
 
