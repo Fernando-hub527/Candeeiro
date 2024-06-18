@@ -2,9 +2,12 @@ package main
 
 import (
 	"github.com/Fernando-hub527/candieiro/internal/handles"
-	"github.com/Fernando-hub527/candieiro/internal/pkg/auth"
 	"github.com/Fernando-hub527/candieiro/internal/pkg/broker"
-	"github.com/Fernando-hub527/candieiro/internal/pkg/websocket"
+	"github.com/Fernando-hub527/candieiro/pkg/auth"
+	"github.com/Fernando-hub527/candieiro/pkg/websocket"
+	// "github.com/Fernando-hub527/candieiro/internal/pkg/auth"
+	// "github.com/Fernando-hub527/candieiro/internal/pkg/broker"
+	// "github.com/Fernando-hub527/candieiro/internal/pkg/websocket"
 	consumutionrepository "github.com/Fernando-hub527/candieiro/internal/repository/consumutionRepository"
 	pointrepository "github.com/Fernando-hub527/candieiro/internal/repository/pointRepository"
 	userrepository "github.com/Fernando-hub527/candieiro/internal/repository/userRepository"
