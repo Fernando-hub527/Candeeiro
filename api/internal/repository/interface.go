@@ -1,14 +1,17 @@
 package repository
 
-import "github.com/Fernando-hub527/candieiro/internal/entity"
+import (
+	"github.com/Fernando-hub527/candieiro/internal/entity"
+	"github.com/Fernando-hub527/candieiro/pkg/customerrors"
+)
 
 type IUserRepository interface {
-	createUser(user *entity.User) *entity.User
-	findUserByName(userName string) *entity.User
+	CreateUser(user *entity.User) (*entity.User, *customerrors.RequestError)
+	FindUserByName(userName string) (*entity.User, *customerrors.RequestError)
 }
 
 type IElectricityRepository interface {
-	recordConsumption(consumption *entity.Consumution) *entity.Consumution
-	createConsumptionPlace(place *entity.ConsumptionPlace) *entity.ConsumptionPlace
-	createPlan(plan *entity.Plan) *entity.Plan
+	RecordConsumption(consumption *entity.Consumution) *entity.Consumution
+	CreateConsumptionPlace(place *entity.ConsumptionPlace) *entity.ConsumptionPlace
+	CreatePlan(plan *entity.Plan) *entity.Plan
 }
